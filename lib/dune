@@ -1,0 +1,3 @@
+(library
+ (name podcast_dl)
+ (libraries curl xmlm re fmt))
