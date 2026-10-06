@@ -1,18 +1,22 @@
 type episode = { title : string option; audio_url : string option }
 
 type state = {
-  stack : Xmlm.name list;
-  text : Buffer.t;
-  current : episode option;
-  finished : episode list;  (* reversed *)
+    stack : Xmlm.name list
+  ; text : Buffer.t
+  ; current : episode option
+  ; finished : episode list (* reversed *)
 }
 
 let atom_ns = "http://www.w3.org/2005/Atom"
-let attr key attrs = List.find_map (fun ((_, k), v) -> if k = key then Some v else None) attrs
+
+let attr key attrs =
+  List.find_map (fun ((_, k), v) -> if k = key then Some v else None) attrs
+
 let mentions_audio = Re.(execp (compile (str "audio")))
 
 let is_audio ~mime url =
-  Option.fold mime ~none:false ~some:mentions_audio || Audio_url.looks_like_audio url
+  Option.fold mime ~none:false ~some:mentions_audio
+  || Audio_url.looks_like_audio url
 
 let enclosure_url (_, local) attrs =
   let candidate =
@@ -74,7 +78,9 @@ let rec scan input st =
 let parse xml =
   (* Feeds often contain HTML entities XML doesn't define; drop them. *)
   let input = Xmlm.make_input ~entity:(fun _ -> Some "") (`String (0, xml)) in
-  let init = { stack = []; text = Buffer.create 256; current = None; finished = [] } in
+  let init =
+    { stack = []; text = Buffer.create 256; current = None; finished = [] }
+  in
   try Ok (scan input init)
   with Xmlm.Error ((line, _), err) ->
     Error (Fmt.str "XML error at line %d: %s" line (Xmlm.error_message err))

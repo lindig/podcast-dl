@@ -53,7 +53,8 @@ let transfer oc ~url ~on_progress =
         Curl.set_writefunction h write;
         Curl.set_noprogress h false;
         Curl.set_progressfunction h (fun total now _ _ ->
-            on_progress ~downloaded:(int_of_float now) ~total:(int_of_float total);
+            on_progress ~downloaded:(int_of_float now)
+              ~total:(int_of_float total);
             false);
         perform h url)
   in

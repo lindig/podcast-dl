@@ -23,9 +23,9 @@ let () =
   | Error e -> failwith e
   | Ok
       [
-        { title = Some t2; audio_url = Some u2 };
-        { title = Some t1; audio_url = Some u1 };
-        { title = Some t0; audio_url = None };
+        { title = Some t2; audio_url = Some u2 }
+      ; { title = Some t1; audio_url = Some u1 }
+      ; { title = Some t0; audio_url = None }
       ] ->
       assert (t2 = "Ep 2: A & B");
       assert (u2 = "https://x.test/e2.m4a?token=1");
