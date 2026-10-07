@@ -1,5 +1,5 @@
 (executable
  (name main)
  (public_name podcast-dl)
- (package podcast_dl)
+ (package podcast-dl)
  (libraries podcast_dl cmdliner fmt))
